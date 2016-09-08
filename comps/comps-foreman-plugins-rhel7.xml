@@ -35,6 +35,7 @@
       <packagereq type="default">tfm-rubygem-foreman_openscap</packagereq>
       <packagereq type="default">tfm-rubygem-foreman_param_lookup</packagereq>
       <packagereq type="default">tfm-rubygem-foreman_remote_execution</packagereq>
+      <packagereq type="default">tfm-rubygem-foreman_remote_execution_core</packagereq>
       <packagereq type="default">tfm-rubygem-foreman_reserve</packagereq>
       <packagereq type="default">tfm-rubygem-foreman_salt</packagereq>
       <packagereq type="default">tfm-rubygem-foreman_setup</packagereq>
@@ -55,7 +56,6 @@
       <packagereq type="default">tfm-rubygem-parse-cron</packagereq>
       <packagereq type="default">tfm-rubygem-puppetdb_foreman</packagereq>
       <packagereq type="default">tfm-rubygem-smart_proxy_dynflow_core</packagereq>
-      <packagereq type="default">tfm-rubygem-smart_proxy_remote_execution_ssh_core</packagereq>
       <packagereq type="default">rubygem-fast_gettext</packagereq>
       <packagereq type="default">rubygem-foreman_scap_client</packagereq>
       <packagereq type="default">rubygem-newt</packagereq>
@@ -194,6 +194,7 @@
       <packagereq type="default">tfm-rubygem-foreman_one-doc</packagereq>
       <packagereq type="default">tfm-rubygem-foreman_openscap-doc</packagereq>
       <packagereq type="default">tfm-rubygem-foreman_param_lookup-doc</packagereq>
+      <packagereq type="default">tfm-rubygem-foreman_remote_execution_core-doc</packagereq>
       <packagereq type="default">tfm-rubygem-foreman_remote_execution-doc</packagereq>
       <packagereq type="default">tfm-rubygem-foreman_reserve-doc</packagereq>
       <packagereq type="default">tfm-rubygem-foreman_salt-doc</packagereq>
@@ -221,7 +222,6 @@
       <packagereq type="default">tfm-rubygem-parse-cron-doc</packagereq>
       <packagereq type="default">tfm-rubygem-safe_yaml-doc</packagereq>
       <packagereq type="default">tfm-rubygem-smart_proxy_dynflow_core-doc</packagereq>
-      <packagereq type="default">tfm-rubygem-smart_proxy_remote_execution_ssh_core-doc</packagereq>
       <packagereq type="default">tfm-rubygem-systemu-doc</packagereq>
       <packagereq type="default">tfm-rubygem-uuid-doc</packagereq>
       <packagereq type="default">tfm-rubygem-wicked-doc</packagereq>

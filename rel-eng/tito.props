@@ -331,6 +331,7 @@ whitelist = rubygem-algebrick
   rubygem-foreman_openstack_cluster
   rubygem-foreman_param_lookup
   rubygem-foreman_remote_execution
+  rubygem-foreman_remote_execution_core
   rubygem-foreman_reserve
   rubygem-foreman_salt
   rubygem-foreman_setup
@@ -355,7 +356,6 @@ whitelist = rubygem-algebrick
   rubygem-puppetdb_foreman
   rubygem-safe_yaml
   rubygem-smart_proxy_dynflow_core
-  rubygem-smart_proxy_remote_execution_ssh_core
   rubygem-wicked
   rubygem-zscheduler
 
@@ -440,6 +440,7 @@ whitelist = rubygem-algebrick
   rubygem-foreman_openstack_cluster
   rubygem-foreman_param_lookup
   rubygem-foreman_remote_execution
+  rubygem-foreman_remote_execution_core
   rubygem-foreman_reserve
   rubygem-foreman_salt
   rubygem-foreman_scap_client
@@ -476,7 +477,6 @@ whitelist = rubygem-algebrick
   rubygem-smart_proxy_openscap
   rubygem-smart_proxy_pulp
   rubygem-smart_proxy_remote_execution_ssh
-  rubygem-smart_proxy_remote_execution_ssh_core
   rubygem-smart_proxy_salt
   rubygem-wicked
   rubygem-zscheduler

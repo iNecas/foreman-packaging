@@ -36,6 +36,7 @@
       <packagereq type="default">rubygem-foreman_openscap</packagereq>
       <packagereq type="default">rubygem-foreman_param_lookup</packagereq>
       <packagereq type="default">rubygem-foreman_remote_execution</packagereq>
+      <packagereq type="default">rubygem-foreman_remote_execution_core</packagereq>
       <packagereq type="default">rubygem-foreman_reserve</packagereq>
       <packagereq type="default">rubygem-foreman_salt</packagereq>
       <packagereq type="default">rubygem-foreman_scap_client</packagereq>
@@ -65,7 +66,6 @@
       <packagereq type="default">rubygem-smart_proxy_openscap</packagereq>
       <packagereq type="default">rubygem-smart_proxy_pulp</packagereq>
       <packagereq type="default">rubygem-smart_proxy_remote_execution_ssh</packagereq>
-      <packagereq type="default">rubygem-smart_proxy_remote_execution_ssh_core</packagereq>
       <packagereq type="default">rubygem-smart_proxy_salt</packagereq>
 
       <packagereq type="default">rubygem-algebrick</packagereq>
@@ -138,6 +138,7 @@
       <packagereq type="default">rubygem-foreman_one-doc</packagereq>
       <packagereq type="default">rubygem-foreman_openscap-doc</packagereq>
       <packagereq type="default">rubygem-foreman_param_lookup-doc</packagereq>
+      <packagereq type="default">rubygem-foreman_remote_execution_core-doc</packagereq>
       <packagereq type="default">rubygem-foreman_remote_execution-doc</packagereq>
       <packagereq type="default">rubygem-foreman_reserve-doc</packagereq>
       <packagereq type="default">rubygem-foreman_salt-doc</packagereq>
@@ -174,7 +175,6 @@
       <packagereq type="default">rubygem-smart_proxy_monitoring-doc</packagereq>
       <packagereq type="default">rubygem-smart_proxy_openscap-doc</packagereq>
       <packagereq type="default">rubygem-smart_proxy_pulp-doc</packagereq>
-      <packagereq type="default">rubygem-smart_proxy_remote_execution_ssh_core-doc</packagereq>
       <packagereq type="default">rubygem-smart_proxy_remote_execution_ssh-doc</packagereq>
       <packagereq type="default">rubygem-smart_proxy_salt-doc</packagereq>
       <packagereq type="default">rubygem-wicked-doc</packagereq>
