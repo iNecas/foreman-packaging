@@ -7,6 +7,9 @@
 %global scl_ruby_bin /usr/bin/%{?scl:%{scl_prefix}}ruby
 %global scl_rake /usr/bin/%{?scl:%{scl_prefix}}rake
 
+%global foreman_tasks_instdir %{gem_dir}/gems/foreman-tasks-%{foreman_tasks_version}
+%global foreman_tasks_version 0.8.6
+
 # set and uncomment all three to set alpha tag
 #global alphatag RC1
 #global dotalphatag .%{alphatag}
@@ -29,6 +32,7 @@ Source5: %{name}.tmpfiles
 Source6: %{name}.repo
 Source7: %{name}-plugins.repo
 Source8: %{name}.gpg
+Source9: http://rubygems.org/downloads/foreman-tasks-%{foreman_tasks_version}.gem
 BuildArch:  noarch
 
 Requires: %{?scl_prefix_ruby}ruby(release)
@@ -77,7 +81,6 @@ Requires: %{?scl_prefix}rubygem(deep_cloneable) >= 2.2.2
 Requires: %{?scl_prefix}rubygem(deep_cloneable) < 3.0
 Requires: %{?scl_prefix}rubygem(validates_lengths_from_database) >= 0.5
 Requires: %{?scl_prefix}rubygem(validates_lengths_from_database) < 1.0
-Requires: %{?scl_prefix}rubygem(foreman-tasks) >= 0.8.5
 Requires: %{?scl_prefix}rubygem(friendly_id) >= 5.0
 Requires: %{?scl_prefix}rubygem(friendly_id) < 6.0
 Requires: %{?scl_prefix}rubygem(secure_headers) >= 3.4
@@ -117,6 +120,16 @@ Requires: %{?scl_prefix}rubygem(deacon) >= 1.0
 Requires: %{?scl_prefix}rubygem(deacon) < 2.0
 Requires: %{?scl_prefix}rubygem(webpack-rails) >= 0.9.7
 Requires: %{?scl_prefix}rubygem(webpack-rails) < 1.0.0
+
+Requires: %{?scl_prefix}rubygem(foreman-tasks-core)
+Requires: %{?scl_prefix}rubygem(dynflow) >= 0.8.17
+Requires: %{?scl_prefix}rubygem(dynflow) < 0.9.0
+Requires: %{?scl_prefix}rubygem(parse-cron) >= 0.1.4
+Requires: %{?scl_prefix}rubygem(parse-cron) < 0.2.0
+Requires: %{?scl_prefix}rubygem-sequel
+Requires: %{?scl_prefix_ror}rubygem(sinatra)
+Requires: %{?scl_prefix}rubygem(daemons)
+
 # facter
 %if 0%{?scl:1}
 Requires: %{?scl_prefix}rubygem(facter)
@@ -299,6 +312,16 @@ BuildRequires: %{?scl_prefix}rubygem(facter)
 %else
 BuildRequires: facter
 %endif
+
+BuildRequires: %{?scl_prefix_ruby}rubygems-devel
+BuildRequires: %{?scl_prefix}rubygem(foreman-tasks-core)
+BuildRequires: %{?scl_prefix}rubygem(dynflow) >= 0.8.17
+BuildRequires: %{?scl_prefix}rubygem(dynflow) < 0.9.0
+BuildRequires: %{?scl_prefix}rubygem(parse-cron) >= 0.1.4
+BuildRequires: %{?scl_prefix}rubygem(parse-cron) < 0.2.0
+BuildRequires: %{?scl_prefix}rubygem-sequel
+BuildRequires: %{?scl_prefix_ror}rubygem(sinatra)
+BuildRequires: %{?scl_prefix}rubygem(daemons)
 
 %package cli
 Summary: Foreman CLI
@@ -637,7 +660,20 @@ plugins required for Foreman to work.
 %prep
 %setup -q -n %{name}-%{version}%{?dashalphatag}
 
+mkdir -p .%{gem_dir}
+%{?scl:scl enable %{scl} "}
+gem install --local --install-dir .%{gem_dir} \
+            --force %{SOURCE9} --no-rdoc --no-ri
+%{?scl:"}
+
 %build
+
+make adsf
+mkdir -p
+
+export GEM_PATH=.%{gem_dir}:$(gem env gempath)
+%{_sysconfdir}/%{name}/plugins
+
 #build man pages
 %{scl_rake} -f Rakefile.dist build \
   PREFIX=%{_prefix} \
@@ -648,7 +684,8 @@ plugins required for Foreman to work.
 #replace shebangs and binaries in scripts for SCL
 %if %{?scl:1}%{!?scl:0}
   # shebangs
-  for f in bin/* script/performance/profiler script/performance/benchmarker script/foreman-config ; do
+for f in bin/* script/performance/profiler script/performance/benchmarker script/foreman-config\
+               .%{foreman_tasks_instdir}/bin/*; do
     sed -ri '1sX(/usr/bin/ruby|/usr/bin/env ruby)X%{scl_ruby_bin}X' $f
   done
   sed -ri '1,$sX/usr/bin/rubyX%{scl_ruby_bin}X' %{SOURCE1}
@@ -707,6 +744,22 @@ install -Dp -m0644 %{SOURCE4} %{buildroot}%{_sysconfdir}/cron.d/%{name}
 %if 0%{?rhel} > 6 || 0%{?fedora} > 16
 install -Dp -m0644 %{SOURCE5} %{buildroot}%{_prefix}/lib/tmpfiles.d/%{name}.conf
 %endif
+
+#install foreman-tasks
+install -d -m0755 %{buildroot}%{gem_dir}
+cp -a .%{gem_dir}/* %{buildroot}%{gem_dir}/
+
+install -Dp -m0750 %{buildroot}/%{foreman_tasks_instdir}/config/foreman-tasks.yaml.example \
+  %{buildroot}%{_sysconfdir}/%{name}/plugins/foreman-tasks.yaml
+
+install -Dp -m0644 %{buildroot}%{foreman_tasks_instdir}/deploy/foreman-tasks.sysconfig %{buildroot}%{sysconfig_dir}/foreman-tasks
+install -Dp -m0644 %{buildroot}%{foreman_tasks_instdir}/deploy/foreman-tasks.service %{buildroot}%{_unitdir}/foreman-tasks.service
+
+install -Dp -m0755 %{foreman_tasks_instdir}/bin/foreman-tasks  %{buildroot}%{_sbindir}/foreman-tasks
+
+#link dynflow-debug.sh to be called from foreman-debug
+chmod +x %{foreman_tasks_instdir}/extra/dynflow-debug.sh
+ln -s %{foreman_tasks_instdir}/extra/dynflow-debug.sh %{buildroot}%{_datadir}/%{name}/script/%{name}-debug.d/60-dynflow_debug
 
 install -Dpm0644 %{SOURCE6} %{buildroot}%{_sysconfdir}/yum.repos.d/%{name}.repo
 install -Dpm0644 %{SOURCE7} %{buildroot}%{_sysconfdir}/yum.repos.d/%{name}-plugins.repo
@@ -925,6 +978,9 @@ fi
 
 /sbin/chkconfig --add %{name} || :
 (/sbin/service foreman status && /sbin/service foreman restart) >/dev/null 2>&1
+
+/sbin/chkconfig --add foreman-tasks
+(/sbin/service foreman-tasks status && /sbin/service foreman-tasks restart) >/dev/null 2>&1
 exit 0
 
 %posttrans
@@ -934,6 +990,7 @@ exit 0
 %{foreman_rake} db:seed >> %{_localstatedir}/log/%{name}/db_seed.log 2>&1 || :
 %{foreman_rake} apipie:cache:index >> %{_localstatedir}/log/%{name}/apipie_cache.log 2>&1 || :
 (/sbin/service foreman status && /sbin/service foreman restart) >/dev/null 2>&1
+(/sbin/service foreman-tasks status && /sbin/service foreman-tasks restart) >/dev/null 2>&1
 exit 0
 
 %preun
